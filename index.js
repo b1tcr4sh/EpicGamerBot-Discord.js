@@ -1,11 +1,11 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const config = require('./config.json');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
-const prefix = '?';
-const info = require('./commands/staff/BotInfo/BotInfo');
+const prefix = config.prefix;
 const logMessage = require('./logMessage');
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
@@ -24,8 +24,7 @@ for (const file of staffCommandFiles) {
 
 
 client.once('ready', () => {
-    const info = require('./commands/staff/BotInfo/BotInfo.js');
-    console.log(`Epic Gamer Discord Bot (v ${info.version});  Awaiting action...`);
+    console.log(`Epic Gamer Discord Bot (v ${config.version});  Awaiting action...`);
     fs.writeFile('recentLog.txt', 'Bot started and is running, awaiting action...' + '\r\n', function (err) {
         if (err) return console.log(err);
     });
@@ -78,8 +77,7 @@ client.on('message', message => {
 client.on('error', () => {
     console.log(error);
     message.channel.send(`I have encountered an error: [${error}]   Please contact server moderators for assistance!`);
-    info.status.error = true;
     return;
 });
 
-client.login('NzYyODA4MDc1NTUxNzY4NTc4.X3uiYQ.FB3qNwsTEmXHCmd8kBMtl3r-ccE');
+client.login(config.token);
