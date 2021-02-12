@@ -41,37 +41,18 @@ client.on('message', message => {
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
 
-    if (command === 'ping') {
-        client.commands.get('ping').execute(message, args);
+    try {
+        client.commands.get(command).execute(message, args, client, commandFiles);
+        logMessage.LogMessage(command, message, args);
+    } catch(error) {
+        if (command == undefined) {
+            message.reply(`Unrecognized Command!`);
+        }
+        else {
+        console.log(error);
+        message.reply(`Command Failed to Execute: ${error}`);
+        }
     }
-    else if (command === 'mcserver') {
-        client.commands.get('mcserver').execute(message, args);
-    }
-    else if (command === 'sudo') {
-        client.commands.get('sudo').execute(message, args);
-    }
-    else if (command === 'log') {
-        client.commands.get('log').execute(message, args);
-    }
-    else if (command === 'info') {
-        client.commands.get('info').execute(message, args);
-    }
-    else if (command === 'simp') {
-        client.commands.get('simp').execute(message, args);
-    }
-    else if (command === 'help') {
-        client.commands.get('help').execute(message, args, client, commandFiles); 
-    }
-    else {
-        const dateObj = new Date();
-        const seconds = dateObj.getSeconds();
-        message.channel.send('Unrecognized Command!');
-        fs.appendFile('recentLog.txt', `[ ${seconds} ]s user: ${message.author} performed: ?${command} (Invalid Command) \r\n`, function (err) {
-            if (err) return console.log(err);
-        });
-        return;
-    }
-    logMessage.LogMessage(command, message, args);
 });
 
 client.on('error', () => {
