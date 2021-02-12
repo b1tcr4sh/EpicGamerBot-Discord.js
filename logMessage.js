@@ -10,7 +10,7 @@ module.exports = {
             });
         }
         else {
-            fs.appendFile('recentLog.txt', `[ ${seconds} ]s user: ${message.author} performed: '?${command} \r\n'`, function (err) {
+            fs.appendFile('recentLog.txt', `[ ${seconds} ]s user: ${message.author} performed: '?${command} \r\n`, function (err) {
                 if (err) return console.log(err);
             });
         }
