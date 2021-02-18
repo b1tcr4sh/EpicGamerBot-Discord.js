@@ -42,7 +42,7 @@ client.on('message', message => {
     const command = args.shift().toLowerCase();
 
     try {
-        client.commands.get(command).execute(message, args, client, commandFiles);
+        client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord);
         logMessage.LogMessage(command, message, args);
     } catch(error) {
         if (command == undefined) {
