@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const config = require('./config.json');
 
-const client = new Discord.Client();
+const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
 client.commands = new Discord.Collection();
 
 const prefix = config.prefix;
@@ -42,7 +42,7 @@ client.on('message', message => {
     const command = args.shift().toLowerCase();
 
     try {
-        client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord);
+        client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord, config);
         logMessage.LogMessage(command, message, args);
     } catch(error) {
         if (command == undefined) {
