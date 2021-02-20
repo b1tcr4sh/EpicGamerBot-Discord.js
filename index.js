@@ -4,11 +4,6 @@ const config = require('./config.json');
 
 const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
 client.commands = new Discord.Collection();
-client.user.setActivity("?help", {
-    type: "LISTENING",
-    url: "https://github.com/TheArcticHusky/EpicGamerBot-Discord.js"
-});
-
 
 const prefix = config.prefix;
 const logMessage = require('./logMessage');
@@ -29,6 +24,11 @@ for (const file of staffCommandFiles) {
 
 
 client.once('ready', () => {
+    client.user.setActivity("?help", {
+        type: "LISTENING",
+        url: "https://github.com/TheArcticHusky/EpicGamerBot-Discord.js"
+    });
+    
     console.log(`Epic Gamer Discord Bot (v ${config.version});  Awaiting action...`);
     fs.writeFile('recentLog.txt', 'Bot started and is running, awaiting action...' + '\r\n', function (err) {
         if (err) return console.log(err);
