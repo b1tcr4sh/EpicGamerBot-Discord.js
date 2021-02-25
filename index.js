@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const config = require('./config.json');
 
-const client = new Discord.Client();
+const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
 client.commands = new Discord.Collection();
 
 const prefix = config.prefix;
@@ -24,9 +24,14 @@ for (const file of staffCommandFiles) {
 
 
 client.once('ready', () => {
+    client.user.setActivity("?help", {
+        type: "LISTENING",
+        url: "https://github.com/TheArcticHusky/EpicGamerBot-Discord.js"
+    });
+    
     console.log(`Epic Gamer Discord Bot (v ${config.version});  Awaiting action...`);
     fs.writeFile('recentLog.txt', 'Bot started and is running, awaiting action...' + '\r\n', function (err) {
-        if (err) return console.log(err);
+        if (err) return console.error(err);
     });
 });
 
@@ -42,22 +47,19 @@ client.on('message', message => {
     const command = args.shift().toLowerCase();
 
     try {
-        client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord);
+        client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord, config);
         logMessage.LogMessage(command, message, args);
+
+        if (!command) throw 'Unrecognized Command'
     } catch(error) {
-        if (command == undefined) {
-            message.reply(`Unrecognized Command!`);
-        }
-        else {
-        console.log(error);
+        console.error(error);
         message.reply(`Command Failed to Execute: ${error}`);
-        }
     }
 });
 
 client.on('error', () => {
-    console.log(error);
-    message.channel.send(`I have encountered an error: [${error}]   Please contact server moderators for assistance!`);
+    console.error(error);
+    message.channel.send(`I have encountered an unhandeled exception: [${error}]   Please contact server moderators for assistance!`);
     return;
 });
 
