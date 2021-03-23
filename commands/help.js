@@ -16,19 +16,12 @@ module.exports = {
 
                 let name = client.commands.get(modifiedElement).name;
                 let description = client.commands.get(modifiedElement).description;
-                helpEmbed.addFields(
-                    {name: name, value: description}
-                );
+                helpEmbed.addFields({
+                    name: name, 
+                    value: description
+                });
             }); 
             message.channel.send(helpEmbed);
-        }
-        else if (args[0] === supportedCommands) {
-            let name = client.commands.get(args[0]).name;
-            let description = client.commands.get(args[0]).description;
-
-            helpEmbed.addFields(
-                {name: name, value: description}
-            );
         }
         else if (args[0] === 'admin') {
             if (!message.member.roles.cache.has('738215800778784859')) return message.reply('You do not have sufficient permissions to perform this command');
@@ -47,5 +40,16 @@ module.exports = {
              });
             message.channel.send(helpEmbed);
         }
+        else if (supportedCommands.contains(args[0])) {
+            let name = client.commands.get(args[0]).name;
+            let description = client.commands.get(args[0]).description;
+            let commandArgs = client.commands.get(name).args;
+
+            helpEmbed.addFields({
+                name: name, 
+                value: description
+            });
+        }
+        else message.reply("Unrecognized Argument");
     }
 }
