@@ -31,7 +31,7 @@ client.once('ready', () => {
         url: "https://github.com/TheArcticHusky/EpicGamerBot-Discord.js"
     });
     
-    console.log(`Epic Gamer Discord Bot (v ${config.version});  Awaiting action...`);
+    console.log(`Epic Gamer Discord Bot (v ${version});  Awaiting action...`);
     fs.writeFile('recentLog.txt', 'Bot started and is running, awaiting action...' + '\r\n', function (err) {
         if (err) return console.error(err);
     });
