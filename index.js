@@ -1,11 +1,13 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const config = require('./config.json');
+const packageLock = require('./package-lock.json');
 
 const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
 client.commands = new Discord.Collection();
 
 const prefix = config.prefix;
+const version = packageLock.version;
 const logMessage = require('./logMessage');
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
@@ -24,7 +26,7 @@ for (const file of staffCommandFiles) {
 
 
 client.once('ready', () => {
-    client.user.setActivity("?help", {
+    client.user.setActivity(`?help | Version ${version}`, {
         type: "LISTENING",
         url: "https://github.com/TheArcticHusky/EpicGamerBot-Discord.js"
     });
