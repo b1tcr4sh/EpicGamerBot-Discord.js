@@ -9,9 +9,11 @@ module.exports = {
             const techEnthusiastRole = message.guild.roles.cache.find(role => role.name === "Tech Enthusiast");
             const DnDRole = message.guild.roles.cache.find(role => role.name === "DnD");
             const EpicMovieWatcherRole = message.guild.roles.cache.find(role => role.name === "Epic Movie Watcher");
+            const EpicArtistRole = message.guild.roles.cache.find(role => role.name === "Epic Artist");
             const TechEmoji = '💻';
             const DnDEmoji = '🎲';
             const MovieWatcherEmoji = '🍿';
+            const ArtistEmoji = '🖊️';
 
             let embed = new Discord.MessageEmbed()
             .setColor('#19fffb')
@@ -19,7 +21,8 @@ module.exports = {
             .setDescription(`React with these emojis to gain their associated roles:
                 \n\n${TechEmoji} - Tech Enthusiast\n\n
                 ${DnDEmoji} - Dungeons and Dragons\n\n
-                ${MovieWatcherEmoji} - Movie Night Notifications`);
+                ${MovieWatcherEmoji} - Movie Night Notifications\n\n
+                ${ArtistEmoji} - Epic Artist`);
 
             let embededMessage = await message.channel.send(embed);
 
@@ -41,6 +44,9 @@ module.exports = {
                     if (reaction.emoji.name === MovieWatcherEmoji) {
                         await reaction.message.guild.members.cache.get(user.id).roles.add(EpicMovieWatcherRole);
                     }
+                    if (reaction.emoji.name === ArtistEmoji) {
+                        await reaction.message.guild.members.cache.get(user.id).roles.add(EpicArtistRole);
+                    }
                 } else return;   
             });
 
@@ -60,6 +66,9 @@ module.exports = {
                 }
                 if (reaction.emoji.name === MovieWatcherEmoji) {
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(EpicMovieWatcherRole);
+                }
+                if (reaction.emoji.name === ArtistEmoji) {
+                    await reaction.message.guild.members.cache.get(user.id).roles.remove(EpicArtistRole);
                 }
             } else return;  
         });
