@@ -20,7 +20,7 @@ module.exports = {
             targetMember.roles.remove(mutedRole);
             targetMember.roles.add(smallEpicGamerRole);
 
-            message.reply(`${target.name} has been successfully unmuted!`);
+            message.reply(`${targetMember.name} has been successfully unmuted!`);
         } else {
             targetMember.roles.remove(smallEpicGamerRole);
             targetMember.roles.remove(epicGamerRole);
@@ -28,7 +28,7 @@ module.exports = {
             targetMember.roles.remove(epicGamerBroskisRole);
             targetMember.roles.add(mutedRole);
 
-            message.reply(`${target.name} has been successfully muted!`);
+            message.reply(`${targetMember.name} has been successfully muted!`);
         }
     }
 }
