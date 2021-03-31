@@ -4,6 +4,11 @@ module.exports = {
     name: 'jail',
     description: 'Banishes a user to the horny gulag',
     execute(message, args) {
+
+        if (!message.member.roles.cache.some(role => role.name === "Mod") || !message.member.roles.cache.some(role => role.name === 'Owner')) {
+            return message.channel.reply('You have insufficient permissions to perform this command!');
+        }
+
         const mutedRole = "754154227730743337";
         const smallEpicGamerRole = "738215330027143189";
         const epicGamerRole = "738470317001015386";
@@ -22,10 +27,10 @@ module.exports = {
 
             message.reply(`${targetMember.name} has been successfully unmuted!`);
         } else {
-            targetMember.roles.remove(smallEpicGamerRole);
-            targetMember.roles.remove(epicGamerRole);
-            targetMember.roles.remove(bigEpicGamerRole);
-            targetMember.roles.remove(epicGamerBroskisRole);
+
+            roles.forEach(element, () => {
+                targetMember.roles.remove(element);
+            })
             targetMember.roles.add(mutedRole);
 
             message.reply(`${targetMember.name} has been successfully muted!`);
