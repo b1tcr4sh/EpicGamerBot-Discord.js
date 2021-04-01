@@ -7,9 +7,6 @@ module.exports = {
         const dateObj = new Date();
         const seconds = dateObj.getSeconds();
 
-        if (!message.member.roles.cache.some(role => role.name === "Mod") || !message.member.roles.cache.some(role => role.name === 'Owner')) {
-            return message.channel.reply('You have insufficient permissions to perform this command!');
-        }
         if (args[0] === "view") {
             message.channel.send({ files: ["./recentlog.txt"]});
         }

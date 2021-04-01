@@ -15,10 +15,6 @@ module.exports = {
             const MovieWatcherEmoji = '🍿';
             const ArtistEmoji = '🖊️';
 
-            if (!message.member.roles.cache.some(role => role.name === "Mod") || !message.member.roles.cache.some(role => role.name === 'Owner')) {
-                return message.channel.reply('You have insufficient permissions to perform this command!');
-            }
-
             let embed = new Discord.MessageEmbed()
             .setColor('#19fffb')
             .setTitle('Custom Roles')

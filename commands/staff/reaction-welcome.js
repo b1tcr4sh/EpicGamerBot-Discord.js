@@ -9,10 +9,6 @@ module.exports = {
         const smallEpicGamerRole = message.guild.roles.cache.find(role => role.name === "Small Epic Gamer")
         const agreeEmoji = '☑️';
 
-        if (!message.member.roles.cache.some(role => role.name === "Mod") || !message.member.roles.cache.some(role => role.name === 'Owner')) {
-            return message.channel.reply('You have insufficient permissions to perform this command!');
-        }
-
         let embed = new Discord.MessageEmbed()
         .setColor('#74fa20')
         .setTitle('Agree to rules')
