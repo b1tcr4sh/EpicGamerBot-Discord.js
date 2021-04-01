@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const reactionCustom = require('./commands/staff/reaction-custom');
+const reactionWelcome = require('./commands/staff/reaction-welcome');
 const config = require('./config.json');
 
 const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
@@ -55,6 +57,8 @@ client.on('message', message => {
         console.error(error);
         message.reply(`Command Failed to Execute: ${error}`);
     }
+
+
 });
 
 client.on('error', () => {
@@ -64,3 +68,4 @@ client.on('error', () => {
 });
 
 client.login(config.token);
+

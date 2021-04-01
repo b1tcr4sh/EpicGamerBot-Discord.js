@@ -1,4 +1,4 @@
-
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: 'reaction-custom',
@@ -14,6 +14,7 @@ module.exports = {
             const DnDEmoji = '🎲';
             const MovieWatcherEmoji = '🍿';
             const ArtistEmoji = '🖊️';
+    
 
             let embed = new Discord.MessageEmbed()
             .setColor('#19fffb')
@@ -25,6 +26,10 @@ module.exports = {
                 ${ArtistEmoji} - Epic Artist`);
 
             let embededMessage = await message.channel.send(embed);
+            embededMessage.react(TechEmoji);
+            embededMessage.react(DnDEmoji);
+            embededMessage.react(MovieWatcherEmoji);
+            embededMessage.react(ArtistEmoji);
 
 
             client.on('messageReactionAdd', async (reaction, user) => {
