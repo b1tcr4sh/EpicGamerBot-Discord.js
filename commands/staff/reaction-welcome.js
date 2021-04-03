@@ -6,7 +6,7 @@ module.exports = {
         const channel = '738294355235700756';
         const smallEpicGamerRole = message.guild.roles.cache.find(role => role.name === "Small Epic Gamer")
         const agreeEmoji = '☑️';
-
+      
         message.delete();
 
         let embed = new Discord.MessageEmbed()
