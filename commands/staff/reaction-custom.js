@@ -1,4 +1,4 @@
-
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: 'reaction-custom',
@@ -14,6 +14,8 @@ module.exports = {
             const DnDEmoji = '🎲';
             const MovieWatcherEmoji = '🍿';
             const ArtistEmoji = '🖊️';
+        
+            message.delete();
 
             if (!message.member.roles.cache.some(role => role.name === "Mod") || !message.member.roles.cache.some(role => role.name === 'Owner')) {
                 return message.channel.reply('You have insufficient permissions to perform this command!');
@@ -29,6 +31,10 @@ module.exports = {
                 ${ArtistEmoji} - Epic Artist`);
 
             let embededMessage = await message.channel.send(embed);
+            embededMessage.react(TechEmoji);
+            embededMessage.react(DnDEmoji);
+            embededMessage.react(MovieWatcherEmoji);
+            embededMessage.react(ArtistEmoji);
 
 
             client.on('messageReactionAdd', async (reaction, user) => {
