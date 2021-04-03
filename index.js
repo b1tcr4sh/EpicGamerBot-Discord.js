@@ -1,7 +1,5 @@
 const Discord = require('discord.js');
 const fs = require('fs');
-const reactionCustom = require('./commands/staff/reaction-custom');
-const reactionWelcome = require('./commands/staff/reaction-welcome');
 const config = require('./config.json');
 
 const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
