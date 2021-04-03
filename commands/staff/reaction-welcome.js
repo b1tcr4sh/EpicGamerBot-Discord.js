@@ -7,6 +7,8 @@ module.exports = {
         const smallEpicGamerRole = message.guild.roles.cache.find(role => role.name === "Small Epic Gamer")
         const agreeEmoji = '☑️';
 
+        message.delete();
+
         let embed = new Discord.MessageEmbed()
         .setColor('#74fa20')
         .setTitle('Agree to rules')

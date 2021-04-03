@@ -14,7 +14,8 @@ module.exports = {
             const DnDEmoji = '🎲';
             const MovieWatcherEmoji = '🍿';
             const ArtistEmoji = '🖊️';
-    
+        
+            message.delete();
 
             let embed = new Discord.MessageEmbed()
             .setColor('#19fffb')
