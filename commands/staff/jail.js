@@ -5,9 +5,8 @@ module.exports = {
     description: 'Banishes a user to the horny gulag',
     execute(message, args) {
 
-        if (!message.member.roles.cache.some(role => role.name === "Mod") || !message.member.roles.cache.some(role => role.name === 'Owner')) {
-            return message.channel.reply('You have insufficient permissions to perform this command!');
-        }
+        if (!message.member.roles.cache.has('738215800778784859')) return message.reply('You have insufficient permissions to perform this command!');
+
 
         const mutedRole = "754154227730743337";
         const smallEpicGamerRole = "738215330027143189";

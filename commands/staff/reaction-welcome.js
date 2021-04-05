@@ -3,6 +3,8 @@ module.exports = {
     description: 'Adds a predefined embed message with reaciton role functionality.  (EXECUTED ON STARTUP)',
     async execute (message, args, client, commandFiles, staffCommandFiles, Discord) {
         
+        if (!message.member.roles.cache.has('738215800778784859')) return message.reply('You have insufficient permissions to perform this command!');
+
         const channel = '738294355235700756';
         const smallEpicGamerRole = message.guild.roles.cache.find(role => role.name === "Small Epic Gamer")
         const agreeEmoji = '☑️';

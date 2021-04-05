@@ -5,6 +5,9 @@ module.exports = {
     description: 'Adds a predefined embed message with reaciton role functionality',
     async execute (message, args, client, commandFiles, staffCommandFiles, Discord) {
         
+        if (!message.member.roles.cache.has('738215800778784859')) return message.reply('You have insufficient permissions to perform this command!');
+
+
             const channel = '812152059238809680';
             const techEnthusiastRole = message.guild.roles.cache.find(role => role.name === "Tech Enthusiast");
             const DnDRole = message.guild.roles.cache.find(role => role.name === "DnD");
