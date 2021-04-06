@@ -8,15 +8,17 @@ module.exports = {
         if (!args.length) return message.channel.send('This command requires arguments!');
         else if (args[0] === 'embed') {
             const customEmbed = new Discord.MessageEmbed();
-            
-            // Gathering embed configuration
-            let instructions = await message.channel.send("Please type the hex code of the desired embed color");
-            const color = message;
-                message.delete();
+            message.channel.send('Enter the embed title:');
 
-                instructions.edit('Please the type the content of the embed title (Leave blank if empty)');
-                const title = message();
-                message.delete();
+            const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, {time: 10000}); 
+            collector.on('collect', message => {
+                input = message.content;
+                global.input = input;
+            });
+
+            const title = global.input;
+            console.log(title);
+
         }
         else {
             message.delete();
