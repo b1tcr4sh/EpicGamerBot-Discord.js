@@ -1,13 +1,13 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const config = require('./config.json');
-const packageLock = require('./package-lock.json');
+const packageJSON = require('./package.json');
 
 const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
 client.commands = new Discord.Collection();
 
 const prefix = config.prefix;
-const version = packageLock.version;
+const version = packageJSON.version;
 const logMessage = require('./logMessage');
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
