@@ -5,7 +5,9 @@ module.exports = {
         let target = message.mentions.users.first();
         let targetMember = message.guild.members.cache.get(target.id);
         const bonkEmoji = client.emojis.cache.find(emoji => emoji.name === 'Bonk');
+        const messages = [`Bonked ${targetMember} ${bonkEmoji}`, `${targetMember} Get bonked child`, `${targetMember}, Get fucked by ${message.author} with a bat`, `Bonk! ${targetMember}, go to horny jail! ${bonkEmoji}`];
         
-        message.channel.send(`Bonked ${targetMember} ${bonkEmoji}`);
+        let randomMessage = messages[Math.floor(Math.random() * messages.length)]
+        message.channel.send(randomMessage);
     }
 }
