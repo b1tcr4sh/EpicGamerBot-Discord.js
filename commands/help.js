@@ -5,7 +5,7 @@ module.exports = {
     description: "Displays all command aliases and descriptions.",
     execute(message, args, client, commandFiles, staffCommandFiles, Discord) {
         const argsFirst = args.toString();
-        let supportedCommands = ['ping'];
+        let supportedCommands = [];
         commandFiles.forEach(element => {
             commandTitle = element.substring(0, element.length-3);
             supportedCommands.push(commandTitle);
