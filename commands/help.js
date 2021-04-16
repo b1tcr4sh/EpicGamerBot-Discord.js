@@ -1,5 +1,3 @@
-const ping = require("./ping");
-
 module.exports = {
     name: 'help',
     description: "Displays all command aliases and descriptions.",
@@ -10,7 +8,10 @@ module.exports = {
             commandTitle = element.substring(0, element.length-3);
             supportedCommands.push(commandTitle);
         });
-        console.log(supportedCommands);
+        staffCommandFiles.forEach(element => {
+            commandTitle = element.substring(0, element.length-3);
+            supportedCommands.push(commandTitle);
+        })
 
         const helpEmbed = new Discord.MessageEmbed()
 
@@ -50,18 +51,20 @@ module.exports = {
             message.channel.send(helpEmbed);
         }
         else if (supportedCommands.includes(argsFirst)) {
+            let commandObject = client.commands.get(argsFirst);
+
             let name = client.commands.get(args[0]).name;
             let description = client.commands.get(args[0]).description;
-            let commandMethods = Object.getOwnPropertyNames(argsFirst).filter(element => {
-                return typeof argsFirst[element] === 'function';
+            let commandMethods = Object.getOwnPropertyNames(commandObject).filter(element => {
+                return typeof commandObject[element] === 'function';
             })
 
-            let commandArgs = commandMethods.filter(method => method.name === 'execute');
-
+            let commandArgs = commandMethods.filter(method => method !== 'execute');
+            console.log(commandArgs);
             if (!commandArgs.length) {
                 commandArgs = 'This Command Has No Arguments!';
             }
-            console.log(commandArgs);
+
             helpEmbed.setTitle(name)
             .setColor('#2BFF78')
             .setDescription(description)

@@ -49,7 +49,7 @@ client.on('message', message => {
     const command = args.shift().toLowerCase();
 
     try {
-        client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord, config);
+        client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version);
         logMessage.LogMessage(command, message, args);
 
         if (!command) throw 'Unrecognized Command'
