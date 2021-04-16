@@ -51,8 +51,6 @@ client.on('message', message => {
     try {
         client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version);
         logMessage.LogMessage(command, message, args);
-
-        if (client.commands.get(command).execute() === undefined) throw 'Unrecognized Command'
     } catch(error) {
         console.error(error);
         message.reply(`Command Failed to Execute: ${error}`);
