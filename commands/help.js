@@ -69,6 +69,8 @@ module.exports = {
         let name = client.commands.get(args[0]).name;
         let description = client.commands.get(args[0]).description;
         let permissions = client.commands.get(args[0]).permissions;
+
+        if (commandObject.disabled === true) return message.reply('This command is disabled');
         let commandMethods = Object.getOwnPropertyNames(commandObject).filter(element => {
             return typeof commandObject[element] === 'function';
         })
