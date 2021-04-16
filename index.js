@@ -49,7 +49,14 @@ client.on('message', message => {
     const command = args.shift().toLowerCase();
 
     try {
-        client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version);
+        if (client.commands.get(command).permissions === "Staff" && message.member.roles.cache.has('738215800778784859')) {
+            client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version);
+        }
+        else if (client.commands.get(command).permissions === "User") {
+            client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version);
+        }
+        else return message.reply('You do not have sufficient permissions to perform this command!');
+
         logMessage.LogMessage(command, message, args);
     } catch(error) {
         console.error(error);
