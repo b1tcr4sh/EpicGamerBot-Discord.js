@@ -3,6 +3,8 @@ const fs = require("fs");
 module.exports = {
     name: 'log',
     description: "An array of commands for admins to interact with bot logs.",
+    permissions: "Staf",
+    disabled: false,
     execute(message, args) {
 
         if (!message.member.roles.cache.has('738215800778784859')) return message.reply('You have insufficient permissions to perform this command!');

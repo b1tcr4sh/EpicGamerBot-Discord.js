@@ -1,6 +1,8 @@
 module.exports = {
     name: 'bonk',
     description: 'Give another use the bonk',
+    permissions: 'User',
+    disabled: false,
     execute(message, args, client, commandFiles, staffCommandFiles, Discord, config) {
         let target = message.mentions.users.first();
         let targetMember = message.guild.members.cache.get(target.id);
