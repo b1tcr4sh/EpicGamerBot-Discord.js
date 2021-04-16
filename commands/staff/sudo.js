@@ -1,6 +1,8 @@
 module.exports = {
     name: 'sudo',
     description: "Writes specified message under bot name.",
+    permissions: "Staff",
+    disabled: false,
     execute(message, args){
         if (!message.member.roles.cache.has('738215800778784859')) return message.reply('You have insufficient permissions to perform this command!');
 

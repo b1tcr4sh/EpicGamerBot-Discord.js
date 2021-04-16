@@ -3,6 +3,8 @@ const { User, Role, ReactionUserManager } = require("discord.js");
 module.exports = {
     name: 'jail',
     description: 'Banishes a user to the horny gulag',
+    permissions: "Staff",
+    disabled: false,
     execute(message, args) {
 
         if (!message.member.roles.cache.has('738215800778784859')) return message.reply('You have insufficient permissions to perform this command!');

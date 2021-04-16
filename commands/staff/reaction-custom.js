@@ -3,6 +3,8 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: 'reaction-custom',
     description: 'Adds a predefined embed message with reaciton role functionality',
+    permissions: "Staff",
+    disabled: false,
     async execute (message, args, client, commandFiles, staffCommandFiles, Discord) {
         
         if (!message.member.roles.cache.has('738215800778784859')) return message.reply('You have insufficient permissions to perform this command!');
