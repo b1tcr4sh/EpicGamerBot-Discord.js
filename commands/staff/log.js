@@ -7,8 +7,6 @@ module.exports = {
     disabled: false,
     execute(message, args) {
 
-        if (!message.member.roles.cache.has('738215800778784859')) return message.reply('You have insufficient permissions to perform this command!');
-
         if (args[0] === "view") {
             this.view(message);
         }
