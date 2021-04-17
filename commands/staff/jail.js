@@ -1,9 +1,11 @@
-const { User, Role, ReactionUserManager } = require("discord.js");
-
 module.exports = {
     name: 'jail',
     description: 'Banishes a user to the horny gulag',
-    execute(message, args) {
+    permissions: "Staff",
+    disabled: false,
+    execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version) {
+
+
         const mutedRole = "754154227730743337";
         const smallEpicGamerRole = "738215330027143189";
         const epicGamerRole = "738470317001015386";
@@ -20,15 +22,15 @@ module.exports = {
             targetMember.roles.remove(mutedRole);
             targetMember.roles.add(smallEpicGamerRole);
 
-            message.reply(`${target.name} has been successfully unmuted!`);
+            message.reply(`${targetMember} has been successfully unmuted!`);
         } else {
-            targetMember.roles.remove(smallEpicGamerRole);
-            targetMember.roles.remove(epicGamerRole);
-            targetMember.roles.remove(bigEpicGamerRole);
-            targetMember.roles.remove(epicGamerBroskisRole);
+
+            roles.forEach(element => {
+                targetMember.roles.remove(element);
+            })
             targetMember.roles.add(mutedRole);
 
-            message.reply(`${target.name} has been successfully muted!`);
+            message.reply(`${targetMember} has been successfully muted!`);
         }
     }
 }
