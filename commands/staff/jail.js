@@ -5,7 +5,7 @@ module.exports = {
     description: 'Banishes a user to the horny gulag',
     permissions: "Staff",
     disabled: false,
-    execute(message, args) {
+    execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version) {
 
 
         const mutedRole = "754154227730743337";
@@ -24,15 +24,15 @@ module.exports = {
             targetMember.roles.remove(mutedRole);
             targetMember.roles.add(smallEpicGamerRole);
 
-            message.reply(`${targetMember.name} has been successfully unmuted!`);
+            message.reply(`${targetMember} has been successfully unmuted!`);
         } else {
 
-            roles.forEach(element, () => {
+            roles.forEach(element => {
                 targetMember.roles.remove(element);
             })
             targetMember.roles.add(mutedRole);
 
-            message.reply(`${targetMember.name} has been successfully muted!`);
+            message.reply(`${targetMember} has been successfully muted!`);
         }
     }
 }
