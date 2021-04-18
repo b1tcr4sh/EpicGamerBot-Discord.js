@@ -1,23 +1,18 @@
-const { MessageEmbed } = require("discord.js");
-
 module.exports = {
-    name: 'reaction-custom',
-    description: 'Adds a predefined embed message with reaciton role functionality',
-    permissions: "Staff",
-    disabled: false,
-    async execute (message, args, client, commandFiles, staffCommandFiles, Discord) {
-
-            const channel = '812152059238809680';
-            const techEnthusiastRole = message.guild.roles.cache.find(role => role.name === "Tech Enthusiast");
-            const DnDRole = message.guild.roles.cache.find(role => role.name === "DnD");
-            const EpicMovieWatcherRole = message.guild.roles.cache.find(role => role.name === "Epic Movie Watcher");
-            const EpicArtistRole = message.guild.roles.cache.find(role => role.name === "Epic Artist");
+    async sendMessage (client, Discord) {
+        
+            const guild = client.guilds.cache.get('527590939280146443');
+            const channel = client.channels.cache.get(`812152059238809680`);
+            const techEnthusiastRole = guild.roles.cache.find(role => role.name === "Tech Enthusiast");
+            const DnDRole = guild.roles.cache.find(role => role.name === "DnD");
+            const EpicMovieWatcherRole = guild.roles.cache.find(role => role.name === "Epic Movie Watcher");
+            const EpicArtistRole = guild.roles.cache.find(role => role.name === "Epic Artist");
             const TechEmoji = '💻';
             const DnDEmoji = '🎲';
             const MovieWatcherEmoji = '🍿';
             const ArtistEmoji = '🖊️';
         
-            message.delete();
+            channel.bulkDelete(1);
 
             if (!message.member.roles.cache.some(role => role.name === "Mod") || !message.member.roles.cache.some(role => role.name === 'Owner')) {
                 return message.channel.reply('You have insufficient permissions to perform this command!');
@@ -32,7 +27,7 @@ module.exports = {
                 ${MovieWatcherEmoji} - Movie Night Notifications\n\n
                 ${ArtistEmoji} - Epic Artist`);
 
-            let embededMessage = await message.channel.send(embed);
+            let embededMessage = await channel.send(embed);
             embededMessage.react(TechEmoji);
             embededMessage.react(DnDEmoji);
             embededMessage.react(MovieWatcherEmoji);
