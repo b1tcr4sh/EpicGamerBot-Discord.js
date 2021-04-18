@@ -24,18 +24,7 @@ for (const file of staffCommandFiles) {
 
 
 client.once('ready', () => {
-    const reactionCustom = require('./reactionroles/reaction-custom');
-    const reactionWelcome = require('./reactionroles/reaction-welcome');
-
-    reactionCustom.sendMessage(client, Discord);
-    reactionWelcome.sendMessage(client, Discord);
-
-    client.user.setActivity("?help", {
-        type: "LISTENING",
-        url: "https://github.com/TheArcticHusky/EpicGamerBot-Discord.js"
-    });
-    
-    console.log(`Epic Gamer Discord Bot (v ${config.version});  Awaiting action...`);
+    console.log(initializeBot() + ` Running version ${config.version}  Awaiting action...`);
     fs.writeFile('recentLog.txt', 'Bot started and is running, awaiting action...' + '\r\n', function (err) {
         if (err) return console.error(err);
     });
@@ -73,3 +62,23 @@ client.on('error', () => {
 
 client.login(config.token);
 
+function initializeBot() {
+    try {
+        const reactionCustom = require('./reactionroles/reaction-custom');
+        const reactionWelcome = require('./reactionroles/reaction-welcome');
+
+        console.log('Initializing reaction messages');
+        reactionWelcome.sendMessage(client, Discord);
+        reactionCustom.sendMessage(client, Discord);
+
+        console.log('Initializing client activity status');
+        client.user.setActivity("?help", {
+            type: "LISTENING",
+            url: "https://github.com/TheArcticHusky/EpicGamerBot-Discord.js"
+        });
+    } catch(error) {
+        client.users.cache.get('219273969415487489').send(`Reaction Message Initialization has failed with error: ${error}`); 
+        return console.error(`Initalization Failed: ${error}`);
+    }
+    return 'Client Initialization Complete.'
+}
