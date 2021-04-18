@@ -5,7 +5,7 @@ module.exports = {
     description: "Writes specified message under bot name.",
     execute(message, args, client, commandFiles, staffCommandFiles, Discord, config){
         if (!args.length) return message.channel.send('This command requires arguments!');
-        
+
         else if (args[0] === 'embed') {
             this.embed(message, args, client, commandFiles, staffCommandFiles, Discord, config);
         }
@@ -18,16 +18,23 @@ module.exports = {
         message.channel.send(args.join(' '));
     },
     embed(message, args, client, commandFiles, staffCommandFiles, Discord, config ) {
+        let embed = {};
+        const messageFilter = m => m.author.id === message.author.id;
+
         const customEmbed = new Discord.MessageEmbed();
-            message.channel.send('Enter the embed title:');
+        message.reply('Enter the embed title:').then(m => m.delete({timeout: 60000}));
 
-            const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, {time: 10000}); 
-            collector.on('collect', message => {
-                input = message.content;
-                global.input = input;
-            });
+        message.channel.awaitMessages(messageFilter, {max: 1, time: 60000, errors: ['time']})
+        .then(collected => {
+            embed.title = collected.first().content;
+            console.log(`A new embed has been created with title ${embed.title}`);
+            collected.first().delete({timeout: 600000});
+        })
+        .catch(error => {
+            console.error(error);
+            return message.reply('Command input timed out (60 seconds)').then(m => m.delete({timeout: 10000}))
+        });
 
-            const title = global.input;
-            console.log(title);
+            
     }
 }
