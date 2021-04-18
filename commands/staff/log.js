@@ -3,7 +3,7 @@ const fs = require("fs");
 module.exports = {
     name: 'log',
     description: "An array of commands for admins to interact with bot logs.",
-    permissions: "Staf",
+    permissions: "Staff",
     disabled: false,
     execute(message, args) {
 
