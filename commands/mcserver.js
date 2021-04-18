@@ -4,6 +4,8 @@ const Rcon = require("rcon");
 module.exports = {
     name: 'mcserver',
     description: "An array of commands for interacting with the minecraft server.",
+    permissions: 'User',
+    disabled: true,
     execute(message, args) {
         const acceptedArgs = ['ip', 'help', 'start'];
         if (!args.length) return message.channel.send('This command requires arguments!  Type "?mcserver help" for a list of supported arguments');
