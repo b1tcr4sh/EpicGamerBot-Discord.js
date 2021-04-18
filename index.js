@@ -24,6 +24,12 @@ for (const file of staffCommandFiles) {
 
 
 client.once('ready', () => {
+    const reactionCustom = require('./reactionroles/reaction-custom');
+    const reactionWelcome = require('./reactionroles/reaction-welcome');
+
+    reactionCustom.sendMessage(client, Discord);
+    reactionWelcome.sendMessage(client, Discord);
+
     client.user.setActivity("?help", {
         type: "LISTENING",
         url: "https://github.com/TheArcticHusky/EpicGamerBot-Discord.js"

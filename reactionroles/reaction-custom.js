@@ -1,22 +1,17 @@
-const { MessageEmbed } = require("discord.js");
-
 module.exports = {
-    name: 'reaction-custom',
-    description: 'Adds a predefined embed message with reaciton role functionality',
-    async execute (message, args, client, commandFiles, staffCommandFiles, Discord) {
+    async sendMessage (client, Discord) {
         
+            const guild = client.guilds.cache.get('527590939280146443');
             const channel = client.channels.cache.get(`812152059238809680`);
-            const techEnthusiastRole = message.guild.roles.cache.find(role => role.name === "Tech Enthusiast");
-            const DnDRole = message.guild.roles.cache.find(role => role.name === "DnD");
-            const EpicMovieWatcherRole = message.guild.roles.cache.find(role => role.name === "Epic Movie Watcher");
-            const EpicArtistRole = message.guild.roles.cache.find(role => role.name === "Epic Artist");
+            const techEnthusiastRole = guild.roles.cache.find(role => role.name === "Tech Enthusiast");
+            const DnDRole = guild.roles.cache.find(role => role.name === "DnD");
+            const EpicMovieWatcherRole = guild.roles.cache.find(role => role.name === "Epic Movie Watcher");
+            const EpicArtistRole = guild.roles.cache.find(role => role.name === "Epic Artist");
             const TechEmoji = '💻';
             const DnDEmoji = '🎲';
             const MovieWatcherEmoji = '🍿';
             const ArtistEmoji = '🖊️';
         
-            console.log(channel);
-
             channel.bulkDelete(1);
 
             let embed = new Discord.MessageEmbed()

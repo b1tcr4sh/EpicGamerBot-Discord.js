@@ -1,10 +1,9 @@
 module.exports = {
-    name: 'reaction-welcome',
-    description: 'Adds a predefined embed message with reaciton role functionality.  (EXECUTED ON STARTUP)',
-    async execute (message, args, client, commandFiles, staffCommandFiles, Discord) {
+    async sendMessage (client, Discord) {
         
+        const guild = client.guilds.cache.get('527590939280146443');
         const channel = client.channels.cache.get(`738294355235700756`);
-        const smallEpicGamerRole = message.guild.roles.cache.find(role => role.name === "Small Epic Gamer")
+        const smallEpicGamerRole = guild.roles.cache.find(role => role.name === "Small Epic Gamer")
         const agreeEmoji = '☑️';
 
         channel.bulkDelete(1);
