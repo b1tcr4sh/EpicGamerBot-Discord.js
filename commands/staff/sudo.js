@@ -18,23 +18,34 @@ module.exports = {
         message.channel.send(args.join(' '));
     },
     embed(message, args, client, commandFiles, staffCommandFiles, Discord, config ) {
+        message.delete();
+
         let embed = {};
         const messageFilter = m => m.author.id === message.author.id;
 
         const customEmbed = new Discord.MessageEmbed();
-        message.reply('Enter the embed title:').then(m => m.delete({timeout: 60000}));
+        collectTitle(message, embed)
+
+            
+    }
+}
+
+function collectTitle(message, embed) {
+    message.reply('Enter the embed title:').then(m => m.delete({timeout: 60000}));
 
         message.channel.awaitMessages(messageFilter, {max: 1, time: 60000, errors: ['time']})
         .then(collected => {
             embed.title = collected.first().content;
             console.log(`A new embed has been created with title ${embed.title}`);
             collected.first().delete({timeout: 600000});
+
+            collectDesc(message, embed)
         })
         .catch(error => {
             console.error(error);
             return message.reply('Command input timed out (60 seconds)').then(m => m.delete({timeout: 10000}))
         });
+}
+function collectDesc() {
 
-            
-    }
 }
