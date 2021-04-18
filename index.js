@@ -65,7 +65,10 @@ client.on('error', () => {
     return;
 });
 
-client.login(config.token);
+console.log('Logging into websockect');
+client.login(config.token)
+.then(() => console.log('Successfully logged in to Discord'))
+.catch(error => console.error(`Login failed with ${error}`));
 
 function initializeBot() {
     try {
