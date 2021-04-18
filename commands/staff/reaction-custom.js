@@ -5,7 +5,7 @@ module.exports = {
     description: 'Adds a predefined embed message with reaciton role functionality',
     async execute (message, args, client, commandFiles, staffCommandFiles, Discord) {
         
-            const channel = '812152059238809680';
+            const channel = client.channels.cache.get(`812152059238809680`);
             const techEnthusiastRole = message.guild.roles.cache.find(role => role.name === "Tech Enthusiast");
             const DnDRole = message.guild.roles.cache.find(role => role.name === "DnD");
             const EpicMovieWatcherRole = message.guild.roles.cache.find(role => role.name === "Epic Movie Watcher");
@@ -15,7 +15,9 @@ module.exports = {
             const MovieWatcherEmoji = '🍿';
             const ArtistEmoji = '🖊️';
         
-            message.delete();
+            console.log(channel);
+
+            channel.bulkDelete(1);
 
             let embed = new Discord.MessageEmbed()
             .setColor('#19fffb')
@@ -26,7 +28,7 @@ module.exports = {
                 ${MovieWatcherEmoji} - Movie Night Notifications\n\n
                 ${ArtistEmoji} - Epic Artist`);
 
-            let embededMessage = await message.channel.send(embed);
+            let embededMessage = await channel.send(embed);
             embededMessage.react(TechEmoji);
             embededMessage.react(DnDEmoji);
             embededMessage.react(MovieWatcherEmoji);

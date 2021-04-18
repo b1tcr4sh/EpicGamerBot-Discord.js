@@ -3,18 +3,18 @@ module.exports = {
     description: 'Adds a predefined embed message with reaciton role functionality.  (EXECUTED ON STARTUP)',
     async execute (message, args, client, commandFiles, staffCommandFiles, Discord) {
         
-        const channel = '738294355235700756';
+        const channel = client.channels.cache.get(`738294355235700756`);
         const smallEpicGamerRole = message.guild.roles.cache.find(role => role.name === "Small Epic Gamer")
         const agreeEmoji = '☑️';
 
-        message.delete();
+        channel.bulkDelete(1);
 
         let embed = new Discord.MessageEmbed()
         .setColor('#74fa20')
         .setTitle('Agree to rules')
         .setDescription(`By reacting to this with ${agreeEmoji}, you are agreeing to the rule of this server and Discord's TOS.`);
 
-        let embededMessage = await message.channel.send(embed);
+        let embededMessage = await channel.send(embed);
         embededMessage.react(agreeEmoji);
 
         client.on('messageReactionAdd', async (reaction, user) => {
