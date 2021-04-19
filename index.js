@@ -65,7 +65,7 @@ client.on('error', () => {
     return;
 });
 
-console.log('Logging into websockect');
+console.log('Logging into websocket');
 client.login(config.token)
 .then(() => console.log('Successfully logged in to Discord'))
 .catch(error => console.error(`Login failed with ${error}`));
