@@ -35,7 +35,7 @@ client.once('ready', () => {
 client.on('message', message => {
     if (!message.content.startsWith(prefix) && !message.author.bot) {
         const randomizedResponses = require('./randomizedResponses');
-        randomizedResponses.harder(message);
+        randomizedResponses.sendRandomMessage(message);
     }
 
     if(!message.content.startsWith(prefix) || message.author.bot) return;
