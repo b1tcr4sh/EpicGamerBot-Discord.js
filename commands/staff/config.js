@@ -27,14 +27,15 @@ module.exports = {
         message.channel.send('Please enter the character(s) you would like to set as the prefix (Type "cancel" to cancel');
 
         const messageFilter = m => m.author === message.author;
-        let prefix = await message.channel.awaitMessages(messageFilter, {max: 1})
+        message.channel.awaitMessages(messageFilter, {max: 1, time: 10000, errors: ['time']})
+        .then(collected => {
+            if (collected === 'cancel') return message.channel.send('Operation canceled');
 
-        if (prefix === 'cancel') return message.channel.send('Operation canceled');
+            config.prefix = collected.content;
+            console.log(`${collected} has been set as the new prefix by ${message.author.name}`);
+            message.channel.send(`Bot prefix has successfully been set as ${collected}`);
 
-        config.prefix = prefix;
-
-        console.log(`${prefix} has been set as the new prefix by ${message.author.name}`);
-        message.channel.send(`Bot prefix has successfully been set as ${prefix}`);
-        this.initializeStatus(client, message, config, version);
+            this.initializeStatus(client, message, config, version);
+        })
     }
 }
