@@ -24,19 +24,19 @@ module.exports = {
         const messageFilter = m => m.author.id === message.author.id;
 
         const customEmbed = new Discord.MessageEmbed();
-        collectTitle(message, embedFields)
+        collectTitle(message, embedFields, messageFilter)
 
         customEmbed.setTitle(embedFields.title)
         .setColor(embedFields.color)
         .setDescription(embedFields.description)
 
-        channel.bulkDelete(4)
+        message.channel.bulkDelete(4)
         .then(message.channel.send(customEmbed))
         .catch(error => console.error(error))
     }
 }
 
-function collectTitle(message, embedFields) {
+function collectTitle(message, embedFields, messageFilter) {
     message.reply('Enter the embed title:').then(m => m.delete({timeout: 60000}));
 
         message.channel.awaitMessages(messageFilter, {max: 1, time: 60000, errors: ['time']})
@@ -45,14 +45,14 @@ function collectTitle(message, embedFields) {
             console.log(`A new embed has been created with title ${embedFields.title}`);
             collected.first().delete({timeout: 60000});
 
-            collectDesc(message, embedFields)
-        })
+            collectDesc(message, embedFields, messageFilter)
+        })  
         .catch(error => {
             console.error(error);
             return message.reply('Command input timed out (60 seconds)').then(m => m.delete({timeout: 10000}))
         });
 }
-function collectDesc(message, messageFilter, embedFields) {
+function collectDesc(message, embedFields, messageFilter) {
     message.channel.awaitMessages(messageFilter, {max: 1, time: 600000, errors: ['time']})
     .then(collected => {
         embedFields.description = collected.first().content;
