@@ -7,7 +7,13 @@ module.exports = {
         const agreeEmoji = '☑️';
         const nsfwChannel = guild.channels.cache.get('775050993498062848');
 
-        channel.bulkDelete(1);
+        channel.bulkDelete(1)
+        .then(() => {
+            console.log(`Successfully deleted reaction message in ${channel.name}`);
+        })
+        .catch(error => {
+            throw `Experienced an error deleting reaction message in ${channel.name}.  ${error}`
+        });
 
         let embed = new Discord.MessageEmbed()
         .setColor('#74fa20')

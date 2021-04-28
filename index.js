@@ -44,7 +44,8 @@ client.on('message', message => {
     const command = args.shift().toLowerCase();
 
     try {
-        if (client.commands.get(command).permissions === "Staff" && message.member.roles.cache.has('738215800778784859')) {
+        if (client.commands.get(command) === undefined) message.reply(`'${message.content}' Command Does Not Exist!`);
+        else if (client.commands.get(command).permissions === "Staff" && message.member.roles.cache.has('738215800778784859')) {
             client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version);
         }
         else if (client.commands.get(command).permissions === "User") {
@@ -55,14 +56,12 @@ client.on('message', message => {
         logMessage.LogMessage(command, message, args);
     } catch(error) {
         console.error(error);
-        message.reply(`Command Failed to Execute: ${error}`);
+        message.reply(error);
     }
 });
 
 client.on('error', () => {
     console.error(error);
-    message.channel.send(`I have encountered an unhandeled exception: [${error}]   Please contact server moderators for assistance!`);
-    return;
 });
 
 console.log('Logging into websocket');
