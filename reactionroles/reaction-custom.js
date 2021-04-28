@@ -12,7 +12,13 @@ module.exports = {
             const MovieWatcherEmoji = '🍿';
             const ArtistEmoji = '🖊️';
         
-            channel.bulkDelete(1);
+            channel.bulkDelete(1)
+            .then(() => {
+                console.log(`Successfully deleted reaction message in ${channel.name}`);
+            })
+            .catch(error => {
+                throw `Experienced an error deleting reaction message in ${channel.name}.  ${error}`
+            });
 
             let embed = new Discord.MessageEmbed()
             .setColor('#19fffb')
