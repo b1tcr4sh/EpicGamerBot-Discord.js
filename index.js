@@ -8,7 +8,7 @@ client.commands = new Discord.Collection();
 
 const prefix = config.prefix;
 const version = packageJSON.version;
-const logMessage = require('./logMessage');
+const logger = require('./logger');
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
@@ -26,10 +26,7 @@ for (const file of staffCommandFiles) {
 
 
 client.once('ready', () => {
-    console.log(initializeBot() + ` Running version ${version}  Awaiting action...`);
-    fs.writeFile('recentLog.txt', 'Bot started and is running, awaiting action...' + '\r\n', function (err) {
-        if (err) return console.error(err);
-    });
+    console.log(initializeBot());
 });
 
 client.on('message', message => {
@@ -53,7 +50,7 @@ client.on('message', message => {
         }
         else return message.reply('You do not have sufficient permissions to perform this command!');
 
-        logMessage.LogMessage(command, message, args);
+        logger.LogMessage(command, message, args);
     } catch(error) {
         console.error(error);
         message.reply(error);
@@ -62,6 +59,7 @@ client.on('message', message => {
 
 client.on('error', () => {
     console.error(error);
+    logger.error(client);
 });
 
 console.log('Logging into websocket');
@@ -87,5 +85,6 @@ function initializeBot() {
         client.users.cache.get('219273969415487489').send(`Reaction Message Initialization has failed with error: ${error}`); 
         return console.error(`Initalization Failed: ${error}`);
     }
-    return 'Client Initialization Complete.'
+    logger.initialize();
+    return `Client Initialization Complete. Running version ${version}  Awaiting action...`;
 }
