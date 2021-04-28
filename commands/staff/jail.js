@@ -39,8 +39,26 @@ module.exports = {
     },
     clear(client) {
         const channel = client.channels.cache.get('738471659299930213');
+        const date = new Date();
+        const currentDay = date.getDate();
 
-        channel.bulkDelete(100)
+        const collector = new Discord.MessageCollector(channel, m => m.author.id !== '762808075551768578')
+        collector.on('collect', collected => {
+            collected.forEach(element => {
+                let createdAt = element.createdAt;
+                let dayCreatedAt = createdAt.getDate();
+
+                if (currentDay - dayCreatedAt > 14) {
+                    collected.splice(indexOf(element), 1);
+                }
+                else {
+                    element.delete();
+                }
+            })
+
+            collected.delete();
+        })
+        
         .then(() => message.channel.send("If you find yourself in this channel, then apparently you have done something to be temporarily muted (Probably being a simp). You'll be unmuted once the moderators deem appropriate, until then - enjoy your stay.\n\n"))
         .catch(error => console.error(error));
     }
