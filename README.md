@@ -1,8 +1,6 @@
-#Certified Epic Gamer
-###Discord Bot
+#Certified Epic Gamer Discord Bot
 
-This bot is written in javscript using Node.js and the Discord.js module.  I'm working on this primarily as a project to help me learn javscript,
-but it also serve some use to our Discord server, even if that is mostly just for screwing with each other.
+This bot is written in javscript using Node.js and the Discord.js module.  I'm working on this primarily as a project to help me learn javscript, but it also serve some use to our Discord server, even if that is mostly just for screwing with each other.
 
 If you want to see my current progress on the bot, feel free to check out my [Trello List](https://trello.com/b/Z3G2p1Gt).  It's coming, even if slowly.
 
