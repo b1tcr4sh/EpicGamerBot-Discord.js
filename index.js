@@ -79,7 +79,7 @@ function initializeBot() {
         reactionCustom.sendMessage(client, Discord);
 
         console.log('Initializing client activity status');
-        client.user.setActivity(`?help | v${version}`, {
+        client.user.setActivity(`${config.prefix}help | v${version}`, {
             type: "LISTENING",
             url: "https://github.com/TheArcticHusky/EpicGamerBot-Discord.js"
         });
