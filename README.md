@@ -10,7 +10,7 @@ The bot has a decent bit commands, the list of which is constantly growing as I 
 #### Prefix: '?'
 - Syntax: ?<command> <argument>
 
-##### Help
+#### Help
 Displays all command aliases and descriptions.
 
 - Sytax: ?help <optional argument>
