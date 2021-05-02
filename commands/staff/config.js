@@ -5,8 +5,8 @@ module.exports = {
     disabled: false,
     execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version) {
         switch (args[0]) {
-            case 'initializeStatus':
-                this.initializeStatus(client, message, config, version);
+            case 'statusInit':
+                this.statusInit(client, message, config, version);
             break;
             case 'setStatus':
                 this.setStatus(client, message, version);
@@ -15,7 +15,7 @@ module.exports = {
                 message.reply('Unrecognized Argument!');
         }
     },
-    initializeStatus(client, message, config, version) {
+    statusInit(client, message, config, version) {
         client.user.setActivity(`${config.prefix}help | v${version}`, {type: "LISTENING"})
         .then(() => message.reply('Client Status Reinitialized!'))
         .catch(error => console.error(error));
