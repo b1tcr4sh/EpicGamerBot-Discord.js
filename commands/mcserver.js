@@ -1,51 +1,59 @@
-const { Channel } = require("discord.js");
-const Rcon = require("rcon");
+const mcserver = require('minecraft-server-util');
+const address = '54.39.252.230';
 
 module.exports = {
     name: 'mcserver',
     description: "An array of commands for interacting with the minecraft server.",
     permissions: 'User',
-    disabled: true,
-    execute(message, args) {
-        const acceptedArgs = ['ip', 'help', 'start'];
-        if (!args.length) return message.channel.send('This command requires arguments!  Type "?mcserver help" for a list of supported arguments');
+    disabled: false,
+    execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version) {
         
-
-        if (args[0] === acceptedArgs[0]) {message.channel.send('The Bois Minecraft SMP IP: 54.39.252.230:25573')}
-        else if (args[0] === acceptedArgs[1]) {
-            message.channel.send('Currently Supported Arguments:');
-            acceptedArgs.forEach(element => {
-                message.channel.send('- ' + element);
-            })
+        if (!args.length) return message.reply('This command requires arguments!');
+        
+        switch (args[0]) {
+            case 'info':
+                this.info(message, Discord);
+                break;
+            case 'ping':
+                this.ping(message);
+                break;
+            default:
+                message.reply(`${args[0]} is an unknown argument`)
         }
-        else if (args[0] === acceptedArgs[2]) {
-            message.channel.send('This command is not currently functional!  Try again later');
+    },
+    async info(message, Discord) {
+        let embed = new Discord.MessageEmbed();
+        let queryMessage = await message.reply(`Querying Minecraft server ${address}...`);
 
-            /*
-            var options = {
-                tcp: true,
-                challenge: false
-            };
-            rconClient = new Rcon('54.39.252.230', '4864', 'UwUmoment', options);
+        mcserver.status(address)
+        .then(response => {
+            queryMessage.delete();
+        
+            embed.setTitle('Minecraft Server Information')
+            .setColor('#42cef5')
+            .setDescription(response.description.toString())
+            .addFields([{
+                name: 'Online Players:',
+                value: `${response.onlinePlayers} / ${response.maxPlayers}`
+            },
+            {
+                name: 'Version:',
+                value: response.version
+            },
+            {
+                name: 'Server Address:',
+                value: `${response.host}:${response.port}`
+            },
+            {
+                name: 'Round Trip Latency:',
+                value: `${response.roundTripLatency} ms`
+            }]);
             
-            message.channel.send('RCON request sent... Awaiting response');
-            rconClient.on('auth', function() {
-                console.log('Authorized!');
-            })
-            rconClient.on('response', function(str) {
-                message.channel.send(`Got Response: ${str}`);
-            })
-            rconClient.on('end', function() {
-                console.log('Socket Closed');
-                process.exit();
-            })
-            rconClient.on('error', function(error){
-                message.channel.send(error);
-            })
-
-            rconClient.connect();
-            */
-        }
-        else return message.channel.send(`Unsupported Argument: ${args[0]}`);
+            message.channel.send(embed);
+        })
+        .catch(error => {
+            if (error === 'timeout') message.reply('The request timed out');
+            console.error(error)
+        });
     }
 }
