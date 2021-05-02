@@ -1,4 +1,5 @@
-const mcserver = require('minecraft-server-util');
+const McServerUtil = require('minecraft-server-util');
+const ping = require('ping');
 const address = '54.39.252.230';
 
 module.exports = {
@@ -14,8 +15,8 @@ module.exports = {
             case 'info':
                 this.info(message, Discord);
                 break;
-            case 'ping':
-                this.ping(message);
+            case 'restart':
+                this.restart(message);
                 break;
             default:
                 message.reply(`${args[0]} is an unknown argument`)
@@ -25,7 +26,7 @@ module.exports = {
         let embed = new Discord.MessageEmbed();
         let queryMessage = await message.reply(`Querying Minecraft server ${address}...`);
 
-        mcserver.status(address)
+        McServerUtil.status(address)
         .then(response => {
             queryMessage.delete();
         
@@ -55,5 +56,35 @@ module.exports = {
             if (error === 'timeout') message.reply('The request timed out');
             console.error(error)
         });
+    },
+    restart(message) {
+        console.log('Initializing RCON client');
+        const rconClient = new McServerUtil.RCON(address, {port: 25575, password: 'UwUmoment'});
+
+        rconClient.on('output', message => {
+            console.log(`RCON command response: ${message}`);
+        })
+
+        rconClient.connect()
+        .then(async () => {
+            await rconClient.run('/stop');
+
+            let restartingMessage = await message.reply('Restarting server and running recursive pings until response...');
+            await rconClient.close();
+
+            let isOnline = false; 
+            while (!isOnline) {
+                let response = await ping.promise.probe(address, {timeout: 10});
+
+                if (response.length) isOnline = true; 
+            }
+
+            message.reply('Minecraft Server is Now Online!')
+            .then(() => restartingMessage.delete());
+        })
+        .catch(error => {
+            console.error(error);
+        })
+        
     }
 }
