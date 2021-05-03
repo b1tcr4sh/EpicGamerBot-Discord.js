@@ -6,7 +6,7 @@ module.exports = {
     execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version) {
         
         if (args[0] === "clear") {
-            this.clear(client);
+            this.clear(client, Discord);
         }
         else {
             const mutedRole = "754154227730743337";
@@ -37,12 +37,12 @@ module.exports = {
             }
         }
     },
-    clear(client) {
+    clear(client, Discord) {
         const channel = client.channels.cache.get('738471659299930213');
         const date = new Date();
         const currentDay = date.getDate();
 
-        const collector = new Discord.MessageCollector(channel, m => m.author.id !== '762808075551768578')
+        let collector = new Discord.MessageCollector(channel, m => m.author.id !== '762808075551768578')
         collector.on('collect', collected => {
             collected.forEach(element => {
                 let createdAt = element.createdAt;
@@ -50,16 +50,15 @@ module.exports = {
 
                 if (currentDay - dayCreatedAt > 14) {
                     collected.splice(indexOf(element), 1);
+                    console.log(`${element} Is too old to be deleted!`)
                 }
                 else {
-                    element.delete();
+                    element.delete()
+                    .then(() => console.log(`${element} Has been deleted!`));
                 }
             })
 
             collected.delete();
         })
-        
-        .then(() => message.channel.send("If you find yourself in this channel, then apparently you have done something to be temporarily muted (Probably being a simp). You'll be unmuted once the moderators deem appropriate, until then - enjoy your stay.\n\n"))
-        .catch(error => console.error(error));
     }
 }
