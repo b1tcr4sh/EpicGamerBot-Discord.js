@@ -1,5 +1,4 @@
 const McServerUtil = require('minecraft-server-util');
-const ping = require('ping');
 const address = '54.39.252.230';
 
 module.exports = {
@@ -17,6 +16,9 @@ module.exports = {
                 break;
             case 'restart':
                 this.restart(message);
+                break;
+            case 'message':
+                this.message(message, args);
                 break;
             default:
                 message.reply(`${args[0]} is an unknown argument`)
@@ -85,6 +87,39 @@ module.exports = {
         .catch(error => {
             console.error(error);
         })
+    },
+    message(message, args) {
+        const firstArg = args.shift();
+        if (firstArg !== 'message') throw 'Incorrect argument function executed!';
+
+        const conjoinedMessage = args.join(' ');
         
+        sendMessage(message, conjoinedMessage);
+
+
     }
+}
+
+const sendMessage = (message, conjoinedMessage) => {
+    console.log('Initializing RCON client');
+    const rconClient = new McServerUtil.RCON(address, {port: 25575, password: 'UwUmoment'});
+
+    rconClient.on('output', response => {
+        console.log(`RCON command response: ${response}`);
+    });
+
+    let responseMessage;
+
+    rconClient.connect()
+    .then(async () => {
+        await rconClient.run(`tellraw @a {"text":"<${message.author} (Discord)> ${conjoinedMessage}","clickEvent":{"action":"open_url","value":" https://discord.com/channels/527590939280146443/${message.channel.id}/${message.id}"}}`)
+
+        responseMessage = await message.reply('Message Sent Successfully!')
+    })
+    .catch(error => {
+        console.error(error);
+    })
+    .finally(() => {
+        responseMessage.delete();
+    })
 }
