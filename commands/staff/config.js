@@ -11,6 +11,9 @@ module.exports = {
             case 'setStatus':
                 this.setStatus(client, message, version);
                 break;
+            case 'toggle':
+                this.toggle(message, args, client);
+                break;
             default:
                 message.reply('Unrecognized Argument!');
         }
@@ -39,5 +42,21 @@ module.exports = {
                 message.reply(`The client status has been set to ${status.content}`)
             });
         })
+    },
+    async toggle(message, args, client) {
+        let target = args[1];
+
+        if (!target) return message.reply('This command requires arguments!  Syntax: "?config toggle [command]"')
+
+        let targetCommand = await client.commands.get(target);
+
+        if (targetCommand.disabled) {
+            targetCommand.disabled = false;
+            message.reply(`${targetCommand.name} Was enabled!`);
+        }
+        else {
+            targetCommand.disabled = true;
+            message.reply(`${targetCommand.name} was disabled!`);
+        }
     }
 }
