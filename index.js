@@ -44,8 +44,10 @@ client.on('message', message => {
     const command = args.shift().toLowerCase();
 
     try {
-        if (client.commands.get(command) === undefined) message.reply(`'${message.content}' Command Does Not Exist!`);
-        else if (client.commands.get(command).permissions === "Staff" && message.member.roles.cache.has('738215800778784859')) {
+        if (client.commands.get(command) === undefined) return message.reply(`'${message.content}' Command Does Not Exist!`);
+        if (client.commands.get(command).disabled) return message.reply(`${command} Is disabled!`);
+
+        if (client.commands.get(command).permissions === "Staff" && message.member.roles.cache.has('738215800778784859')) {
             client.commands.get(command).execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version);
         }
         else if (client.commands.get(command).permissions === "User") {
