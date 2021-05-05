@@ -1,5 +1,4 @@
 const { Channel } = require("discord.js");
-const Rcon = require("rcon");
 
 module.exports = {
     name: 'mcserver',

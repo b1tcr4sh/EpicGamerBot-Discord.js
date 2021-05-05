@@ -6,16 +6,12 @@ module.exports = {
     execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version) {
         
         if (args[0] === "clear") {
-            this.clear(client);
+            this.clear(message, client, Discord);
         }
         else {
             const mutedRole = "754154227730743337";
             const smallEpicGamerRole = "738215330027143189";
-            const epicGamerRole = "738470317001015386";
-            const bigEpicGamerRole = "738215400545976331";
-            const epicGamerBroskisRole = "738470506465853520";
             const roles = ["738215330027143189", "738470317001015386", "738215400545976331", "738470506465853520"];
-            const {member, mentions} = message;
         
             const target = message.mentions.users.first();
             let targetMember = message.guild.members.cache.get(target.id);
@@ -37,29 +33,39 @@ module.exports = {
             }
         }
     },
-    clear(client) {
-        const channel = client.channels.cache.get('738471659299930213');
+    clear(message, client, Discord) {
+        const JailChannel = client.channels.cache.get('738471659299930213');
         const date = new Date();
         const currentDay = date.getDate();
 
-        const collector = new Discord.MessageCollector(channel, m => m.author.id !== '762808075551768578')
+        console.log(date);
+
+        const collector = new Discord.MessageCollector()
         collector.on('collect', collected => {
-            collected.forEach(element => {
+
+            let deleteableMessages = [];
+
+            for (const element of collected) {
                 let createdAt = element.createdAt;
                 let dayCreatedAt = createdAt.getDate();
+                console.log(dayCreatedAt);
 
-                if (currentDay - dayCreatedAt > 14) {
-                    collected.splice(indexOf(element), 1);
+                if (currentDay - dayCreatedAt >= 14) {
+                    deleteableMessages.push(element);
                 }
-                else {
-                    element.delete();
-                }
+            }
+
+            console.log(collected)
+            
+            deleteableMessages.forEach(element => {
+                element.delete();
             })
-
-            collected.delete();
         })
         
-        .then(() => message.channel.send("If you find yourself in this channel, then apparently you have done something to be temporarily muted (Probably being a simp). You'll be unmuted once the moderators deem appropriate, until then - enjoy your stay.\n\n"))
+        message.reply(`${JailChannel.name} Has Been Cleared!`)
+        .then(message => {
+            message.delete({ timeout: 5000})
+        })
         .catch(error => console.error(error));
     }
 }
