@@ -1,6 +1,10 @@
 const McServerUtil = require('minecraft-server-util');
+<<<<<<< HEAD
 const ping = require('ping');
 let address = '54.39.252.230';
+=======
+const address = '54.39.252.230';
+>>>>>>> e360cac623de0ec10ea5013090f6efc8bc759728
 
 module.exports = {
     name: 'mcserver',
@@ -18,8 +22,13 @@ module.exports = {
             case 'restart':
                 this.restart(message);
                 break;
+<<<<<<< HEAD
             case 'players':
                 this.players(message, Discord);
+=======
+            case 'message':
+                this.message(message, args);
+>>>>>>> e360cac623de0ec10ea5013090f6efc8bc759728
                 break;
             default:
                 message.reply(`${args[0]} is an unknown argument`)
@@ -85,6 +94,7 @@ module.exports = {
         .catch(error => {
             console.error(error);
         })
+<<<<<<< HEAD
      
         rconClient.on('output', message => {
             console.log(`RCON> ${message}`);
@@ -116,5 +126,41 @@ module.exports = {
             console.error(error)
             
         })
+=======
+    },
+    message(message, args) {
+        const firstArg = args.shift();
+        if (firstArg !== 'message') throw 'Incorrect argument function executed!';
+
+        const conjoinedMessage = args.join(' ');
+        
+        sendMessage(message, conjoinedMessage);
+
+
+>>>>>>> e360cac623de0ec10ea5013090f6efc8bc759728
     }
+}
+
+const sendMessage = (message, conjoinedMessage) => {
+    console.log('Initializing RCON client');
+    const rconClient = new McServerUtil.RCON(address, {port: 25575, password: 'UwUmoment'});
+
+    rconClient.on('output', response => {
+        console.log(`RCON command response: ${response}`);
+    });
+
+    let responseMessage;
+
+    rconClient.connect()
+    .then(async () => {
+        await rconClient.run(`tellraw @a {"text":"<${message.author} (Discord)> ${conjoinedMessage}","clickEvent":{"action":"open_url","value":" https://discord.com/channels/527590939280146443/${message.channel.id}/${message.id}"}}`)
+
+        responseMessage = await message.reply('Message Sent Successfully!')
+    })
+    .catch(error => {
+        console.error(error);
+    })
+    .finally(() => {
+        responseMessage.delete();
+    })
 }
