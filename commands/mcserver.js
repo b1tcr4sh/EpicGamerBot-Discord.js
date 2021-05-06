@@ -35,7 +35,6 @@ module.exports = {
         console.log(`Fetching Status of ${address}`);
         McServerUtil.status(address, {port: 25573, timeout: 30000, enableSRV: true})
         .then(response => {
-            console.log(response);
 
             embed.setTitle('Minecraft Server Information')
             .setColor('#42cef5')
@@ -67,19 +66,37 @@ module.exports = {
             queryMessage.delete();
         })
     },
-    restart(message) {
+    async restart(message) {
+        console.log(`Fetching Status of ${address}`);
+        let response = await McServerUtil.status(address, {port: 25573, timeout: 30000})
+        let restartingMessage;
+        let commandPayload;
+
+        if (response.onlinePlayers > 0)  {
+            console.log(response.onlinePlayers)
+
+            console.log(`Request to restart server by '${message.author.username}' was aborted, server is not empty.`)
+
+            commandPayload = `/say Discord User <${message.author.username}> requested to restart server, but server is not empty.  Aborting...`;
+            restartingMessage = await message.reply('Server is not empty, aborting');
+        }
+        else {
+            commandPayload = '/stop';
+            restartingMessage = await message.reply('Restarting server, this will take a moment...');
+        }
+
         console.log(`Initializing new RCON client with server ${address} on port 5778`);
         const rconClient = new McServerUtil.RCON(address, {port: 5778, password: 'uwumoment'});
 
         rconClient.connect()
         .then(async () => {
-            await rconClient.run('/stop');
+            console.log(`Sending ${commandPayload} to server ${address}`);
+            await rconClient.run(commandPayload);
 
-            let restartingMessage = await message.reply('Restarting server');
+            
+            restartingMessage.delete({timeout: 10000})
+
             await rconClient.close();
-
-            message.reply('Minecraft Server is Now Online!')
-            .then(() => restartingMessage.delete());
         })
         .catch(error => {
             console.error(error);
@@ -116,28 +133,4 @@ module.exports = {
             
         })
     }
-}
-
-const sendMessage = (message, conjoinedMessage) => {
-    console.log('Initializing RCON client');
-    const rconClient = new McServerUtil.RCON(address, {port: 25575, password: 'UwUmoment'});
-
-    rconClient.on('output', response => {
-        console.log(`RCON command response: ${response}`);
-    });
-
-    let responseMessage;
-
-    rconClient.connect()
-    .then(async () => {
-        await rconClient.run(`tellraw @a {"text":"<${message.author} (Discord)> ${conjoinedMessage}","clickEvent":{"action":"open_url","value":" https://discord.com/channels/527590939280146443/${message.channel.id}/${message.id}"}}`)
-
-        responseMessage = await message.reply('Message Sent Successfully!')
-    })
-    .catch(error => {
-        console.error(error);
-    })
-    .finally(() => {
-        responseMessage.delete();
-    })
 }
