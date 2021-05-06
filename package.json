@@ -1,6 +1,6 @@
 {
   "name": "epic-gamer-bot-discordjs",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "Epic Gamer Discord Bot using Discord.js",
   "main": "index.js",
   "scripts": {
@@ -10,11 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.1",
-<<<<<<< HEAD
-    "minecraft-server-util": "^3.4.4",
-    "ping": "^0.4.1"
-=======
-    "minecraft-server-util": "^3.5.1"  
->>>>>>> e360cac623de0ec10ea5013090f6efc8bc759728
+    "minecraft-server-util": "^3.4.4"
   }
 }
