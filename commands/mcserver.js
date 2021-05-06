@@ -1,6 +1,6 @@
 const McServerUtil = require('minecraft-server-util');
 const ping = require('ping');
-const address = '54.39.252.230';
+let address = '54.39.252.230';
 
 module.exports = {
     name: 'mcserver',
@@ -13,26 +13,34 @@ module.exports = {
         
         switch (args[0]) {
             case 'info':
-                this.info(message, Discord);
+                this.info(message, args,Discord);
                 break;
             case 'restart':
                 this.restart(message);
+                break;
+            case 'players':
+                this.players(message, Discord);
                 break;
             default:
                 message.reply(`${args[0]} is an unknown argument`)
         }
     },
-    async info(message, Discord) {
-        let embed = new Discord.MessageEmbed();
-        let queryMessage = await message.reply(`Querying Minecraft server ${address}...`);
+    async info(message, args,  Discord) {
+        if (args[1]) {
+            address = args[1];
+        }
 
-        McServerUtil.status(address)
+        let embed = new Discord.MessageEmbed();
+        let queryMessage = await message.reply(`Fetching Status of Minecraft server ${address}... (This May Take a Moment)`);
+
+        console.log(`Fetching Status of ${address}`);
+        McServerUtil.status(address, {port: 25573, timeout: 30000, enableSRV: true})
         .then(response => {
-            queryMessage.delete();
-        
+            console.log(response);
+
             embed.setTitle('Minecraft Server Information')
             .setColor('#42cef5')
-            .setDescription(response.description.toString())
+            .setDescription(response.description.toRaw())
             .addFields([{
                 name: 'Online Players:',
                 value: `${response.onlinePlayers} / ${response.maxPlayers}`
@@ -44,40 +52,32 @@ module.exports = {
             {
                 name: 'Server Address:',
                 value: `${response.host}:${response.port}`
-            },
-            {
-                name: 'Round Trip Latency:',
-                value: `${response.roundTripLatency} ms`
             }]);
             
             message.channel.send(embed);
         })
         .catch(error => {
-            if (error === 'timeout') message.reply('The request timed out');
             console.error(error)
-        });
+            message.delete();
+            message.reply('The Request Timed Out!')
+            .then(message => {
+                message.delete({ timeout: 10000 });
+            })
+        })
+        .finally(() => {
+            queryMessage.delete();
+        })
     },
     restart(message) {
-        console.log('Initializing RCON client');
-        const rconClient = new McServerUtil.RCON(address, {port: 25575, password: 'UwUmoment'});
-
-        rconClient.on('output', message => {
-            console.log(`RCON command response: ${message}`);
-        })
+        console.log(`Initializing new RCON client with server ${address} on port 5778`);
+        const rconClient = new McServerUtil.RCON(address, {port: 5778, password: 'uwumoment'});
 
         rconClient.connect()
         .then(async () => {
             await rconClient.run('/stop');
 
-            let restartingMessage = await message.reply('Restarting server and running recursive pings until response...');
+            let restartingMessage = await message.reply('Restarting server');
             await rconClient.close();
-
-            let isOnline = false; 
-            while (!isOnline) {
-                let response = await ping.promise.probe(address, {timeout: 10});
-
-                if (response.length) isOnline = true; 
-            }
 
             message.reply('Minecraft Server is Now Online!')
             .then(() => restartingMessage.delete());
@@ -85,6 +85,36 @@ module.exports = {
         .catch(error => {
             console.error(error);
         })
-        
+     
+        rconClient.on('output', message => {
+            console.log(`RCON> ${message}`);
+        })
+    },
+    async players(message, Discord) {
+        let embed = new Discord.MessageEmbed();
+
+        McServerUtil.status(address, {port: 25573, timeout: 30000})
+        .then(response => {
+            let onlinePlayerList = [];
+
+            response.samplePlayers.forEach(element => {
+                onlinePlayerList.push(element.name)
+            })
+
+            embed.setTitle('Minecraft Server Players')
+            .setColor('#42cef5')
+            .setDescription(`epicsmp.shockbyte.app`)
+            .addField('Online Players:',`${response.onlinePlayers} / ${response.maxPlayers}`)
+            .addFields({
+                name: 'players:',
+                value: `${onlinePlayerList.join(', ')}`
+            })
+
+            message.channel.send(embed);
+        })
+        .catch(error => {
+            console.error(error)
+            
+        })
     }
 }
