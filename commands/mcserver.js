@@ -15,7 +15,7 @@ module.exports = {
                 this.info(message, args,Discord);
                 break;
             case 'restart':
-                this.restart(message);
+                this.restart(message, args);
                 break;
             case 'players':
                 this.players(message, Discord);
@@ -66,45 +66,37 @@ module.exports = {
             queryMessage.delete();
         })
     },
-    async restart(message) {
+    async restart(message, args) {
         console.log(`Fetching Status of ${address}`);
         let response = await McServerUtil.status(address, {port: 25573, timeout: 30000})
         let restartingMessage;
         let commandPayload;
 
+        
         if (response.onlinePlayers > 0)  {
-            console.log(response.onlinePlayers)
-
+            if (args[1] === '--override' && message.member.roles.cache.has('738215800778784859')) {
+                commandPayload = '/stop';
+                restartingMessage = await message.reply('Restarting server, this will take a moment...'); 
+    
+                sendRconCommand(commandPayload, restartingMessage);
+            }
+            else if (args[1] && args[1] !== '--override') message.reply('Invalid flag, proceeding as normal...').delete({timeout: 5000})
+            
             console.log(`Request to restart server by '${message.author.username}' was aborted, server is not empty.`)
 
             commandPayload = `/say Discord User <${message.author.username}> requested to restart server, but server is not empty.  Aborting...`;
             restartingMessage = await message.reply('Server is not empty, aborting');
+
+            sendRconCommand(commandPayload, restartingMessage);
         }
         else {
             commandPayload = '/stop';
             restartingMessage = await message.reply('Restarting server, this will take a moment...');
+
+            sendRconCommand(commandPayload, restartingMessage);
         }
 
-        console.log(`Initializing new RCON client with server ${address} on port 5778`);
-        const rconClient = new McServerUtil.RCON(address, {port: 5778, password: 'uwumoment'});
-
-        rconClient.connect()
-        .then(async () => {
-            console.log(`Sending ${commandPayload} to server ${address}`);
-            await rconClient.run(commandPayload);
-
-            
-            restartingMessage.delete({timeout: 10000})
-
-            await rconClient.close();
-        })
-        .catch(error => {
-            console.error(error);
-        })
-    
-        rconClient.on('output', message => {
-            console.log(`RCON> ${message}`);
-        })
+        
     },
     async players(message, Discord) {
         let embed = new Discord.MessageEmbed();
@@ -133,4 +125,27 @@ module.exports = {
             
         })
     }
+}
+
+function sendRconCommand (commandPayload, restartingMessage) {
+    console.log(`Initializing new RCON client with server ${address} on port 5778`);
+    const rconClient = new McServerUtil.RCON(address, {port: 5778, password: 'uwumoment'});
+
+    rconClient.connect()
+    .then(async () => {
+        console.log(`Sending ${commandPayload} to server ${address}`);
+        await rconClient.run(commandPayload);
+
+        
+        restartingMessage.delete({timeout: 10000})
+
+        await rconClient.close();
+    })
+    .catch(error => {
+        console.error(error);
+    })
+
+    rconClient.on('output', message => {
+        console.log(`RCON> ${message}`);
+    })
 }
