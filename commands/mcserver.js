@@ -113,9 +113,13 @@ module.exports = {
         .then(response => {
             let onlinePlayerList = [];
 
-            response.samplePlayers.forEach(element => {
-                onlinePlayerList.push(element.name)
-            })
+            if (response.samplePlayers === null) {
+                onlinePlayerList = ['None']
+            } else {
+                response.samplePlayers.forEach(element => {
+                    onlinePlayerList.push(element.name)
+                })
+            }
 
             embed.setTitle('Minecraft Server Players')
             .setColor('#42cef5')
