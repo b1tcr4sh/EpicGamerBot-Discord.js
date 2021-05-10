@@ -1,6 +1,6 @@
 {
   "name": "epic-gamer-bot-discordjs",
-  "version": "1.4.10",
+  "version": "1.5.10",
   "description": "Epic Gamer Discord Bot using Discord.js",
   "main": "index.js",
   "scripts": {
