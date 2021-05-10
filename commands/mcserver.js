@@ -95,8 +95,6 @@ module.exports = {
 
             sendRconCommand(commandPayload, restartingMessage);
         }
-
-        
     },
     async players(message, Discord) {
         let embed = new Discord.MessageEmbed();
@@ -105,9 +103,13 @@ module.exports = {
         .then(response => {
             let onlinePlayerList = [];
 
-            response.samplePlayers.forEach(element => {
-                onlinePlayerList.push(element.name)
-            })
+            if (response.samplePlayers === null) {
+                onlinePlayerList = ['None']
+            } else {
+                response.samplePlayers.forEach(element => {
+                    onlinePlayerList.push(element.name)
+                })
+            }
 
             embed.setTitle('Minecraft Server Players')
             .setColor('#42cef5')

@@ -5,17 +5,20 @@ module.exports = {
     disabled: false,
     execute(message, args, client, commandFiles, staffCommandFiles, Discord, config, version) {
         switch (args[0]) {
-            case 'initializeStatus':
-                this.initializeStatus(client, message, config, version);
+            case 'statusInit':
+                this.statusInit(client, message, config, version);
             break;
             case 'setStatus':
                 this.setStatus(client, message, version);
+                break;
+            case 'toggle':
+                this.toggle(message, args, client);
                 break;
             default:
                 message.reply('Unrecognized Argument!');
         }
     },
-    initializeStatus(client, message, config, version) {
+    statusInit(client, message, config, version) {
         client.user.setActivity(`${config.prefix}help | v${version}`, {type: "LISTENING"})
         .then(() => message.reply('Client Status Reinitialized!'))
         .catch(error => console.error(error));
@@ -39,5 +42,21 @@ module.exports = {
                 message.reply(`The client status has been set to ${status.content}`)
             });
         })
+    },
+    async toggle(message, args, client) {
+        let target = args[1];
+
+        if (!target) return message.reply('This command requires arguments!  Syntax: "?config toggle [command]"')
+
+        let targetCommand = await client.commands.get(target);
+
+        if (targetCommand.disabled) {
+            targetCommand.disabled = false;
+            message.reply(`${targetCommand.name} Was enabled!`);
+        }
+        else {
+            targetCommand.disabled = true;
+            message.reply(`${targetCommand.name} was disabled!`);
+        }
     }
 }

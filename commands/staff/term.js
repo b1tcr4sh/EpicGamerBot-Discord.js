@@ -1,5 +1,5 @@
 module.exports = {
-    name: 'kill',
+    name: 'term',
     description: 'Gracefully terminates the client process, only accessible by bot author',
     permissions: 'Staff',
     disabled: false,
