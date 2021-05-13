@@ -1,4 +1,5 @@
 const McServerUtil = require('minecraft-server-util');
+const Parser = require('rss-parser');
 const address = '54.39.252.230';
 
 module.exports = {
@@ -20,6 +21,9 @@ module.exports = {
             case 'players':
                 this.players(message, Discord);
                 break;
+            case 'debug-rss':
+                sendStatusUpdateMessage(message, Discord);
+                break;
             default:
                 message.reply(`${args[0]} is an unknown argument`)
         }
@@ -35,6 +39,8 @@ module.exports = {
         console.log(`Fetching Status of ${address}`);
         McServerUtil.status(address, {port: 25573, timeout: 30000, enableSRV: true})
         .then(response => {
+            if (!response) message.reply('Server is offline!');
+
 
             embed.setTitle('Minecraft Server Information')
             .setColor('#42cef5')
@@ -150,4 +156,39 @@ function sendRconCommand (commandPayload, restartingMessage) {
     rconClient.on('output', message => {
         console.log(`RCON> ${message}`);
     })
+}
+
+
+async function sendStatusUpdateMessage(message, Discord) {
+    let statusMessage = await fetchStatusUpdate();
+    if (statusMessage === 'No new status updates are available') return message.reply(statusMessage);
+
+    // Send Embed Containing Status title and Snippets
+}
+
+async function fetchStatusUpdate() {
+    const parser = new Parser();
+
+    let currentFeed = await parser.parseURL('https://status.shockbyte.com/history.rss');
+
+    var currentStatus = () => {
+        for (element of currentFeed.items) {
+            if (element.title.includes('NA')) {
+                return element;
+            }
+        }
+        return element;
+    }
+
+    const previousStatus = JSON.parse(localStorage.getItem('previousStatus'));
+
+    if (currentStatus !== previousStatus) {
+        // localStorage exists only in browser, so I'll have to store this in a previousStatus.json file
+        localStorage.setItem('previousStatus', JSON.stringify(currentStatus));
+
+        console.log(`Found new status update from Shockbyte: ${currentStatus.title}`)
+        return currentStatus;
+    } else {
+        console.log('No new status updates are available');
+    }
 }
