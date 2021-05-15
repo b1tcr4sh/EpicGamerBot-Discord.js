@@ -46,6 +46,7 @@ module.exports = {
     async toggle(message, args, client) {
         let target = args[1];
 
+        if (target === this.name) return message.reply('Cannot toggle the toggle command!');
         if (!target) return message.reply('This command requires arguments!  Syntax: "?config toggle [command]"')
 
         let targetCommand = await client.commands.get(target);
