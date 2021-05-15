@@ -27,7 +27,7 @@ for (const file of staffCommandFiles) {
 
 client.once('ready', () => {
     console.log(initializeBot() + ` Running version ${version}  Awaiting action...`);
-    fs.writeFile('recentLog.txt', 'Bot started and is running, awaiting action...' + '\r\n', function (err) {
+    fs.writeFile('recent.log', 'Bot started and is running, awaiting action...' + '\r\n', function (err) {
         if (err) return console.error(err);
     });
 });

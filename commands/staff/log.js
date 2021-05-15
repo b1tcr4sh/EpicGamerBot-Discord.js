@@ -16,14 +16,14 @@ module.exports = {
         else return message.channel.send('This command requires arguments!');
     },
     view(message) {
-        message.channel.send({ files: ['./recentLog.txt']});
+        message.channel.send({ files: ['./recent.log']});
         console.log('Synchronous File Upload Started; Uploading log file');
     },
     clear(message) {
         const dateObj = new Date();
         const seconds = dateObj.getSeconds();
 
-        fs.writeFile('recentLog.txt', `[ ${seconds} ]s user: ${message.author} cleared the log \r\n`, (err) => {
+        fs.writeFile('recent.log', `[ ${seconds} ]s user: ${message.author} cleared the log \r\n`, (err) => {
             if (err) return console.log(err);
         });
         message.channel.send('Log Cleared!');

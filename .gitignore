@@ -115,7 +115,7 @@ dist
 .yarn/install-state.gz
 .pnp.* 
 
-recentLog.txt
+recent.log
 config.json
 nohup.out
 previousShockbyteStatus.json
