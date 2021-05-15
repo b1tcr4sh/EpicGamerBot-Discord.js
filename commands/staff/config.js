@@ -20,7 +20,11 @@ module.exports = {
     },
     statusInit(client, message, config, version) {
         client.user.setActivity(`${config.prefix}help | v${version}`, {type: "LISTENING"})
-        .then(() => message.reply('Client Status Reinitialized!'))
+        .then(() => message.reply('Client Status Reinitialized!')
+            .then(responseMessage => {
+                responseMessage.delete({timeout: 5000});
+                message.delete({timeout: 5000});
+            }))
         .catch(error => console.error(error));
     },
     async setStatus(client, message, version) {
@@ -40,6 +44,10 @@ module.exports = {
                 instructions.delete();
                 status.delete();
                 message.reply(`The client status has been set to ${status.content}`)
+                .then(responseMessage => {
+                    responseMessage.delete({timeout: 5000});
+                    message.delete({timeout: 5000});
+                })
             });
         })
     },
@@ -53,11 +61,19 @@ module.exports = {
 
         if (targetCommand.disabled) {
             targetCommand.disabled = false;
-            message.reply(`${targetCommand.name} Was enabled!`);
+            message.reply(`${targetCommand.name} Was enabled!`)
+            .then(responseMessage => {
+                responseMessage.delete({timeout: 5000});
+                message.delete({timeout: 5000});
+            })
         }
         else {
             targetCommand.disabled = true;
-            message.reply(`${targetCommand.name} was disabled!`);
+            message.reply(`${targetCommand.name} was disabled!`)
+            .then(responseMessage => {
+                responseMessage.delete({timeout: 5000});
+                message.delete({timeout: 5000});
+            })
         }
     }
 }
