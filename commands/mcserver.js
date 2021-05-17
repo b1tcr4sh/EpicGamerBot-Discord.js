@@ -1,6 +1,5 @@
 const rssUpdateHandler = require('../ShockbyteRssUpdates/rssUpdateHandler');
 const McServerUtil = require('minecraft-server-util');
-const Parser = require('rss-parser');
 const address = '54.39.252.230';
 
 module.exports = {
@@ -25,7 +24,7 @@ module.exports = {
             case 'debug-rss':
                 rssUpdateHandler.sendStatusUpdateMessage(message, Discord);
                 break;
-            case 'rss-cache':
+            case 'force-update-cache':
                 rssUpdateHandler.updateCache(undefined);
             default:
                 message.reply(`${args[0]} is an unknown argument`)
