@@ -4,7 +4,6 @@ const fs = require('fs/promises');
 module.exports = {
     async sendStatusUpdateMessage(message, Discord) {
         let statusMessage = await fetchStatusUpdate();
-        console.log(statusMessage);
         if (statusMessage === -1) return message.reply('No new status updates were available');
 
         // Send Embed Containing Status title and Snippets
@@ -18,10 +17,9 @@ module.exports = {
             console.log(currentStatus);
         }
         
-        let writeResponse = await fs.writeFile('previousShockbyteStatus.json', JSON.stringify(currentStatus, ['content'], '\t'), error => {
+        await fs.writeFile('previousShockbyteStatus.json', JSON.stringify(currentStatus, ['content'], '\t'), error => {
             if (error) console.error(error);
         })
-        console.log(writeResponse);
     }
 }
 
@@ -36,6 +34,7 @@ async function fetchStatusUpdate() {
 
     if (isUpdatedStatus(currentStatus, previousStatus)) {
         console.log('Found new status update!');
+        console.log(currentStatus);
 
         module.exports.updateCache(currentStatus); //Undefined (Needs to access upper object)
         return currentStatus
