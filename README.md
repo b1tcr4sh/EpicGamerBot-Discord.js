@@ -5,18 +5,18 @@ This bot is written in javscript using Node.js and the Discord.js module.  I'm w
 If you want to see my current progress on the bot, feel free to check out my [Trello List](https://trello.com/b/Z3G2p1Gt).  It's coming, even if slowly.
 
 ## Documentation
-Currently, the bot has a few commands with significant functions which is available to non-admin users.  These can be listed by using the 'help' command. 
+Currently, the bot has a few commands with significant functions which are available to non-admin users.  These can be listed by using the 'help' command. 
 #### Command Syntax: `?[command] [argument]`
 
 #### Help Command
 Displays all command aliases and descriptions.
 
-- Sytax: ?help [paramater(optional)]
+- Sytax: `?help [paramater(optional)]`
 
 - Arguments: 
-  - [empty]: Displays all commands available to members.
+  - `[empty]`: Displays all commands available to members.
   - 'admin': Displays all commands available to admins.  (Requires admin permissions to execute)
-  - [Any Valid Command]: Displays specific information about the command entered.
+  - `[Any Valid Command]`: Displays specific information about the command entered.
   
 ## Self Usage
 Although this bot is currently only deployed to run in our server, you can download this project, modify, and use it as you would like, as long as you comply with the [Apache 2.0 license](https://github.com/TheArcticHusky/EpicGamerBot-Discord.js/blob/master/LICENSE)
