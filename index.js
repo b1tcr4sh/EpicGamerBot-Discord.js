@@ -8,7 +8,7 @@ client.commands = new Discord.Collection();
 
 const prefix = config.prefix;
 const version = packageJSON.version;
-const logMessage = require('./logMessage');
+const logMessage = require('./src/logMessage');
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
@@ -34,7 +34,7 @@ client.once('ready', () => {
 
 client.on('message', message => {
     if (!message.content.startsWith(prefix) && !message.author.bot) {
-        const randomizedResponses = require('./randomizedResponses');
+        const randomizedResponses = require('./src/randomizedResponses');
         randomizedResponses.sendRandomMessage(message);
     }
 
@@ -73,8 +73,8 @@ client.login(config.token)
 
 function initializeBot() {
     try {
-        const reactionCustom = require('./reactionroles/reaction-custom');
-        const reactionWelcome = require('./reactionroles/reaction-welcome');
+        const reactionCustom = require('./src/reactionroles/reaction-custom');
+        const reactionWelcome = require('./src/reactionroles/reaction-welcome');
 
         console.log('Initializing reaction messages');
         reactionWelcome.sendMessage(client, Discord);
