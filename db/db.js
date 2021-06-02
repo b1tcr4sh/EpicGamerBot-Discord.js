@@ -10,7 +10,7 @@ module.exports = {
 
         const url = `mongodb://${user}:${password}@${hostname}:${port}/${dbName}?authSource=admin`;
 
-        mongoose.connect(url, {useNewUrlParser: true}, {useUnifiedTopology: true});
+        mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
         const db = mongoose.connection;
         
         db.on('error', error => {
