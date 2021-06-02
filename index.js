@@ -2,13 +2,14 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const config = require('./config.json');
 const packageJSON = require('./package.json');
+const logMessage = require('./src/logMessage');
+const db = require('./db/db');
 
 const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
 client.commands = new Discord.Collection();
 
 const prefix = config.prefix;
 const version = packageJSON.version;
-const logMessage = require('./src/logMessage');
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
@@ -85,6 +86,8 @@ function initializeBot() {
             type: "LISTENING",
             url: "https://github.com/TheArcticHusky/EpicGamerBot-Discord.js"
         });
+
+        db.connect();
     } catch(error) {
         client.users.cache.get('219273969415487489').send(`Reaction Message Initialization has failed with error: ${error}`); 
         return console.error(`Initalization Failed: ${error}`);
